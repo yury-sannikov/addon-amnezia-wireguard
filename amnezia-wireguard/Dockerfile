@@ -11,6 +11,7 @@ RUN \
     apk add --no-cache --virtual .build-dependencies \
         build-base=0.5-r3 \
         git=2.40.1-r0 \
+        linux-headers \
     \
     && apk add --no-cache \
         go=1.20.10-r0 \
@@ -21,8 +22,13 @@ RUN \
     \
     && ln -sf /sbin/xtables-nft-multi /sbin/ip6tables \
     && ln -sf /sbin/xtables-nft-multi /sbin/iptables \
-    && git clone --branch "0.0.20230223" --depth=1 \
-        "https://git.zx2c4.com/wireguard-go" /tmp/wireguard \
+    && git clone --depth=1 \
+        https://github.com/amnezia-vpn/amnezia-wg-tools.git /tmp/wg-tools \
+    && cd /tmp/wg-tools/src \
+    && make \
+    && make install \
+    && git clone --depth=1 \
+        "https://github.com/amnezia-vpn/amnezia-wg" /tmp/wireguard \
     \
     && cd /tmp/wireguard \
     && make \
