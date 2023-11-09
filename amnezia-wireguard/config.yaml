@@ -1,9 +1,9 @@
 ---
-name: WireGuard
+name: AmneziaWG
 version: dev
 slug: wireguard
-description: Fast, modern, secure VPN tunnel
-url: https://github.com/hassio-addons/addon-wireguard
+description: AmneziaWG is a fork of WireGuard-Go and offers protection against detection by Deep Packet Inspection (DPI) systems.
+url: https://github.com/yury-sannikov/addon-amnezia-wireguard
 codenotary: codenotary@frenck.dev
 arch:
   - aarch64
