@@ -2,7 +2,7 @@
 name: AmneziaWG
 version: dev
 slug: wireguard
-description: AmneziaWG is a fork of WireGuard-Go and offers protection against detection by Deep Packet Inspection (DPI) systems.
+description: AmneziaWG is a fork of WireGuard-Go with protection against detection by the DPI systems.
 url: https://github.com/yury-sannikov/addon-amnezia-wireguard
 codenotary: codenotary@frenck.dev
 arch:
