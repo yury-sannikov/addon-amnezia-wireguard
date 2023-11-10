@@ -1,3 +1,36 @@
+# AmneziaWG
+
+AmneziaWG (AmneziaWireGuard) is a fork of the regular WireGuard-Go with the addition of functions to bypass blocking and reduce the likelihood of protocol detection. One of the key features of AmneziaWG is backward compatibility with WireGuard. This means that when using AmneziaWG, unless the configuration specifies specific parameters for protocol obfuscation, it will act as a standard WireGuard.
+
+What's special?
+
+Before the session starts, the client sends several packets with random data (the number of such packets Jc and their minimum and maximum size in bytes Jmin, Jmax is set in the config)
+
+The header of the handshake packet (Initiator to Responder) and the response packet (Responder to Initiator) have been changed; these values are also set in the config (H1 and H2)
+
+Init handshake packets additionally have garbage at the beginning of the data,
+the dimensions are determined by the values of S1 and S2. (by default, the initial handshake packet has a fixed size (148 bytes), after adding garbage, its size will be 148 + the length of random bytes).
+
+The header of data packages and special “Under Load” packages has been changed - H4 and H3, respectively.
+More details about the new custom fields:
+
+- `junk_packet_count` Jc (Junk packet count) - the number of packets with random data that are sent before the start of the session
+- `junk_packet_min_size` JMin (Junk packet minimum size) - minimum packet size for Junk packet. That is, all randomly generated packets will have a size no less than Jmin
+- `junk_packet_max_size` JMax (Junk packet maximum size) - maximum size for Junk packets
+- `init_packet_junk_size` S1 (Init packet junk size) - the size of random data that will be added to the init packet, the size of which is initially fixed
+- `response_packet_junk_size` S2 (Response packet junk size) - the size of random data that will be added to the response, the size of which is initially fixed
+- `init_packet_magic_header` H1 (Init packet magic header) - header of the first byte of the handshake
+- `response_packet_magic_header` H2 (Response packet magic header) - header of the first byte of the handshake response
+- `transport_packet_magic_header` H3 (Transport packet magic header) - header of the transmitted data packet
+- `uload_packet_magic_header` H4 (Underload packet magic header) - UnderLoad packet header
+
+As you can guess, the headings H1, H2, H3, H4 should be different. If you set Jc, S1 and S2 to zero, then there will be no garbage.
+
+> **_NOTE:_**
+A regular WG server can work with the AmneziaWG configuration in which Jc, Jmin, Jmax are set, and the remaining fields are zero. Thus, the AWG client will simply send garbage packets before init packets, which has absolutely no effect on the operation of the WG protocol, but may confuse DPI.
+
+---
+
 # Home Assistant Community Add-on: WireGuard
 
 [![GitHub Release][releases-shield]][releases]
