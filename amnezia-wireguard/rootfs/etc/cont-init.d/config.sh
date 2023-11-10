@@ -28,6 +28,15 @@ declare pre_up
 declare server_private_key
 declare server_public_key
 declare table
+declare junk_packet_count
+declare junk_packet_min_size
+declare junk_packet_max_size
+declare init_packet_junk_size
+declare response_packet_junk_size
+declare init_packet_magic_header
+declare response_packet_magic_header
+declare transport_packet_magic_header
+declare uload_packet_magic_header
 
 if ! bashio::fs.directory_exists '/ssl/wireguard'; then
     mkdir -p /ssl/wireguard ||
@@ -144,11 +153,11 @@ response_packet_magic_header=$(bashio::config "server.response_packet_magic_head
 transport_packet_magic_header=$(bashio::config "server.transport_packet_magic_header")
 uload_packet_magic_header=$(bashio::config "server.uload_packet_magic_header")
 
-bashio::var.has_value "${junk_packet_count}" && [ ! "${junk_packet_count}" = "0" ] \
+bashio::var.has_value "${junk_packet_count}" \
     && echo "Jc = ${junk_packet_count}" >> "${config}"
-bashio::var.has_value "${junk_packet_min_size}" && [ ! "${junk_packet_min_size}" = "0" ] \
+bashio::var.has_value "${junk_packet_min_size}" \
     && echo "Jmin = ${junk_packet_min_size}" >> "${config}"
-bashio::var.has_value "${junk_packet_max_size}" && [ ! "${junk_packet_max_size}" = "0" ] \
+bashio::var.has_value "${junk_packet_max_size}" \
     && echo "Jmax = ${junk_packet_max_size}" >> "${config}"
 bashio::var.has_value "${init_packet_junk_size}" && [ ! "${init_packet_junk_size}" = "0" ] \
     && echo "S1 = ${init_packet_junk_size}" >> "${config}"
