@@ -36,15 +36,9 @@ options:
       allowed_ips: []
       client_allowed_ips: []
   amnezia:
-    junk_packet_count: 0
-    junk_packet_min_size: 0
-    junk_packet_max_size: 0
-    init_packet_junk_size: null
-    response_packet_junk_size: null
-    init_packet_magic_header: null
-    response_packet_magic_header: null
-    transport_packet_magic_header: null
-    uload_packet_magic_header: null
+    junk_packet_count: 3
+    junk_packet_min_size: 100
+    junk_packet_max_size: 1000
 schema:
   log_level: list(trace|debug|info|notice|warning|error|fatal)?
   server:
