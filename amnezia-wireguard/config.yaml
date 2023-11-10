@@ -39,12 +39,12 @@ options:
     junk_packet_count: 0
     junk_packet_min_size: 0
     junk_packet_max_size: 0
-    init_packet_junk_size: 0
-    response_packet_junk_size: 0
-    init_packet_magic_header: 0
-    response_packet_magic_header: 0
-    transport_packet_magic_header: 0
-    uload_packet_magic_header: 0
+    init_packet_junk_size: null
+    response_packet_junk_size: null
+    init_packet_magic_header: null
+    response_packet_magic_header: null
+    transport_packet_magic_header: null
+    uload_packet_magic_header: null
 schema:
   log_level: list(trace|debug|info|notice|warning|error|fatal)?
   server:
@@ -78,9 +78,9 @@ schema:
       pre_shared_key: str?
       fwmark: str?
   amnezia:
-    junk_packet_count: int?
-    junk_packet_min_size: int?
-    junk_packet_max_size: int?
+    junk_packet_count: int
+    junk_packet_min_size: int
+    junk_packet_max_size: int
     init_packet_junk_size: int?
     response_packet_junk_size: int?
     init_packet_magic_header: int?
