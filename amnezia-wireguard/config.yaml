@@ -2,7 +2,7 @@
 name: AmneziaWG
 version: dev
 slug: wireguard
-description: AmneziaWG is a fork of WireGuard-Go with protection against detection by the DPI systems.
+description: WireGuard-Go fork with protection against DPI systems.
 url: https://github.com/yury-sannikov/addon-amnezia-wireguard
 codenotary: codenotary@frenck.dev
 arch:
@@ -35,6 +35,16 @@ options:
         - 172.27.66.2
       allowed_ips: []
       client_allowed_ips: []
+  amnezia:
+    junk_packet_count: 0
+    junk_packet_min_size: 0
+    junk_packet_max_size: 0
+    init_packet_junk_size: 0
+    response_packet_junk_size: 0
+    init_packet_magic_header: 0
+    response_packet_magic_header: 0
+    transport_packet_magic_header: 0
+    uload_packet_magic_header: 0
 schema:
   log_level: list(trace|debug|info|notice|warning|error|fatal)?
   server:
@@ -67,3 +77,15 @@ schema:
       endpoint: str?
       pre_shared_key: str?
       fwmark: str?
+  amnezia:
+    junk_packet_count: int?
+    junk_packet_min_size: int?
+    junk_packet_max_size: int?
+    init_packet_junk_size: int?
+    response_packet_junk_size: int?
+    init_packet_magic_header: int?
+    response_packet_magic_header: int?
+    transport_packet_magic_header: int?
+    uload_packet_magic_header: int?
+
+

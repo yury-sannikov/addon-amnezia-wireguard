@@ -133,6 +133,36 @@ if bashio::config.has_value 'server.post_down'; then
     fi
 fi
 
+# AmneziaWG specific settings
+junk_packet_count=$(bashio::config "server.junk_packet_count")
+junk_packet_min_size=$(bashio::config "server.junk_packet_min_size")
+junk_packet_max_size=$(bashio::config "server.junk_packet_max_size")
+init_packet_junk_size=$(bashio::config "server.init_packet_junk_size")
+response_packet_junk_size=$(bashio::config "server.response_packet_junk_size")
+init_packet_magic_header=$(bashio::config "server.init_packet_magic_header")
+response_packet_magic_header=$(bashio::config "server.response_packet_magic_header")
+transport_packet_magic_header=$(bashio::config "server.transport_packet_magic_header")
+uload_packet_magic_header=$(bashio::config "server.uload_packet_magic_header")
+
+bashio::var.has_value "${junk_packet_count}" && [ ! "${junk_packet_count}" = "0" ] \
+    && echo "Jc = ${junk_packet_count}" >> "${config}"
+bashio::var.has_value "${junk_packet_min_size}" && [ ! "${junk_packet_min_size}" = "0" ] \
+    && echo "Jmin = ${junk_packet_min_size}" >> "${config}"
+bashio::var.has_value "${junk_packet_max_size}" && [ ! "${junk_packet_max_size}" = "0" ] \
+    && echo "Jmax = ${junk_packet_max_size}" >> "${config}"
+bashio::var.has_value "${init_packet_junk_size}" && [ ! "${init_packet_junk_size}" = "0" ] \
+    && echo "S1 = ${init_packet_junk_size}" >> "${config}"
+bashio::var.has_value "${response_packet_junk_size}" && [ ! "${response_packet_junk_size}" = "0" ] \
+    && echo "S2 = ${response_packet_junk_size}" >> "${config}"
+bashio::var.has_value "${init_packet_magic_header}" && [ ! "${init_packet_magic_header}" = "0" ] \
+    && echo "H1 = ${init_packet_magic_header}" >> "${config}"
+bashio::var.has_value "${response_packet_magic_header}" && [ ! "${response_packet_magic_header}" = "0" ] \
+    && echo "H2 = ${response_packet_magic_header}" >> "${config}"
+bashio::var.has_value "${transport_packet_magic_header}" && [ ! "${transport_packet_magic_header}" = "0" ] \
+    && echo "H3 = ${transport_packet_magic_header}" >> "${config}"
+bashio::var.has_value "${uload_packet_magic_header}" && [ ! "${uload_packet_magic_header}" = "0" ] \
+    && echo "H4 = ${uload_packet_magic_header}" >> "${config}"
+
 # Finish up the main server configuration
 {
     echo "PrivateKey = ${server_private_key}"

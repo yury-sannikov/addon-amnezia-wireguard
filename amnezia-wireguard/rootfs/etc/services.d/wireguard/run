@@ -20,4 +20,7 @@ if bashio::config.has_value "server.interface"; then
 fi
 
 # Run the WireGuard
+echo "--- WireGuard configuration ---"
+cat /etc/wireguard/"${interface}".conf
+echo "-------------------------------"
 exec /awg-tools/wg_quick.sh up "${interface}"
