@@ -29,6 +29,24 @@ As you can guess, the headings H1, H2, H3, H4 should be different. If you set Jc
 > **_NOTE:_**
 A regular WG server can work with the AmneziaWG configuration in which Jc, Jmin, Jmax are set, and the remaining fields are zero. Thus, the AWG client will simply send garbage packets before init packets, which has absolutely no effect on the operation of the WG protocol, but may confuse DPI.
 
+## WireGuard status API
+
+This add-on provides a simple WireGuard status API. This API is not an
+official API, darn simple, and experimental, but does allow you to pull
+in data from the add-on into Home Assistant.
+
+With the use of the [Home Assistant RESTful][ha-rest] integration, one should
+be able to grab some interesting data from this add-on.
+
+Example:
+
+```yaml
+sensor:
+  - platform: rest
+    resource: http://53948f79_wireguard
+```
+This addon features `ping_loss` and `ping_avg` attributes. By default, it is set to `-1`
+To enable peer ping "average" and "packet loss" metrics, specify the `ping_address` address of the peer.
 ---
 
 

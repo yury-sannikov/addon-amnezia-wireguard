@@ -14,6 +14,10 @@ declare peer
 declare public_key
 declare transfer_rx
 declare transfer_tx
+declare ping_result
+declare ping_avg
+declare ping_loss
+
 
 while true; do
     # Get information from wg
@@ -25,12 +29,38 @@ while true; do
             public_key="${line[1]}"
             transfer_rx="${line[6]}"
             transfer_tx="${line[7]}"
+            filename=$(sha1sum <<< "${public_key}" | awk '{ print $1 }')
+            if bashio::fs.file_exists "/var/lib/wireguard/${filename}"; then
+                name=$(<"/var/lib/wireguard/${filename}")
+            else
+               continue
+            fi
+
+            if bashio::fs.file_exists "/tmp/awg-${filename}"; then
+                ping_result=$(<"/tmp/awg-${filename}")
+                ping_loss=$(echo $ping_result | grep "packet loss" | sed -r 's/.*, ([0-9]+)% packet loss.*/\1\n/g') || true
+                ping_avg=$(echo $ping_result | grep "round-trip" | sed -r 's/.*round-trip min\/avg\/max = [0-9\.]+\/([^\/]+).*/\1/g') || true
+            fi
+            ping_loss=${ping_loss:=-1}
+            ping_avg=${ping_avg:=-1}
+
+            for peer in $(bashio::config 'peers|keys'); do
+                if [[ ! $(bashio::config "peers[${peer}].name") = $name ]]; then
+                    continue
+                fi
+                if bashio::config.has_value "peers[${peer}].ping_address"; then
+                    ping $(bashio::config "peers[${peer}].ping_address") \
+                        -s 1024 -q -c 10 -W 1 >/tmp/awg-${filename} &
+                fi
+            done
 
             peer=$(bashio::var.json \
                     'endpoint' "${endpoint}" \
                     'latest_handshake' "^${latest_handshake}" \
                     'transfer_rx' "^${transfer_rx}" \
-                    'transfer_tx' "^${transfer_tx}")
+                    'transfer_tx' "^${transfer_tx}" \
+                    'ping_loss' "^${ping_loss}" \
+                    'ping_avg' "^${ping_avg}")
 
             filename=$(sha1sum <<< "${public_key}" | awk '{ print $1 }')
             if bashio::fs.file_exists "/var/lib/wireguard/${filename}"; then
@@ -46,7 +76,6 @@ while true; do
     if [[ "${#peers[@]}" -ne 0 ]]; then
         json=$(bashio::var.json "${peers[@]}")
     fi
-
     echo -e "HTTP/1.1 200 OK\r\nContent-type: application/json\r\n\r\n${json}" \
         | nc -l -p 80 > /dev/null
 done

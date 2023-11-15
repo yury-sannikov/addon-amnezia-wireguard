@@ -35,6 +35,7 @@ options:
         - 172.27.66.2
       allowed_ips: []
       client_allowed_ips: []
+      ping_address: 172.27.66.2
   amnezia:
     junk_packet_count: 3
     junk_packet_min_size: 100
@@ -71,6 +72,7 @@ schema:
       endpoint: str?
       pre_shared_key: str?
       fwmark: str?
+      ping_address: str?
   amnezia:
     junk_packet_count: int
     junk_packet_min_size: int
