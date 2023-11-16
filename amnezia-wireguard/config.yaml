@@ -13,9 +13,11 @@ init: false
 ports:
   80/tcp: null
   51820/udp: 51820
+  51821/udp: 51821
 ports_description:
   80/tcp: WireGuard peers status API
   51820/udp: "WireGuard: forward this port in your router"
+  51821/udp: "Auxiliary port for the peer"
 hassio_api: true
 privileged:
   - NET_ADMIN
