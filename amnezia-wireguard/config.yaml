@@ -19,6 +19,7 @@ ports_description:
   51820/udp: "WireGuard: forward this port in your router"
   51821/udp: "Auxiliary port for the peer"
 hassio_api: true
+host_network: true
 privileged:
   - NET_ADMIN
 devices:
@@ -60,6 +61,7 @@ schema:
     post_up: str?
     post_down: str?
     mtu: int?
+    listen_port: int?
   peers:
     - name: match(^[a-zA-Z0-9\d](?:[a-zA-Z0-9\d]|-(?=[a-zA-Z0-9\d])){0,32}$)
       private_key: str?

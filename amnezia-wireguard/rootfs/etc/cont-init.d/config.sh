@@ -37,6 +37,7 @@ declare init_packet_magic_header
 declare response_packet_magic_header
 declare transport_packet_magic_header
 declare uload_packet_magic_header
+declare listen_port
 
 if ! bashio::fs.directory_exists '/ssl/wireguard'; then
     mkdir -p /ssl/wireguard ||
@@ -63,6 +64,12 @@ for address in $(bashio::config 'server.addresses'); do
     [[ "${address}" == *"/"* ]] || address="${address}/24"
     echo "Address = ${address}" >> "${config}"
 done
+
+# Get listen port
+listen_port="51820"
+if bashio::config.has_value "server.listen_port"; then
+    listen_port=$(bashio::config "server.listen_port")
+fi
 
 # Add all server DNS addresses to the configuration
 if bashio::config.has_value 'server.dns'; then
@@ -171,12 +178,13 @@ bashio::var.has_value "${uload_packet_magic_header}" && [ ! "${uload_packet_magi
     && echo "H4 = ${uload_packet_magic_header}"
 }  >> "${config}"
 
+
 # Finish up the main server configuration
 {
     echo "PrivateKey = ${server_private_key}"
 
     # Adds server port to the configuration
-    echo "ListenPort = 51820"
+    echo "ListenPort = ${listen_port}"
 
     # Custom routing table
     bashio::config.has_value "server.table" && echo "Table = ${table}"
