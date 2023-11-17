@@ -19,7 +19,6 @@ ports_description:
   51820/udp: "WireGuard: forward this port in your router"
   51821/udp: "Auxiliary port for the peer"
 hassio_api: true
-host_network: true
 privileged:
   - NET_ADMIN
 devices:
