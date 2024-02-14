@@ -21,6 +21,10 @@ fi
 
 # Run the WireGuard
 echo "--- WireGuard configuration ---"
-cat /etc/wireguard/"${interface}".conf
+cat /etc/amnezia/amneziawg/"${interface}".conf
 echo "-------------------------------"
-exec /awg-tools/wg_quick.sh up "${interface}"
+exec awg-quick up "${interface}"
+exec awg
+exec ip addr
+exec ip -4 route
+exec awg show "${interface}"

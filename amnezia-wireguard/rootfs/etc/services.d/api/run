@@ -69,7 +69,7 @@ while true; do
                 peers+=("^${peer}")
             fi
         fi
-    done <<< "$(wg show all dump)"
+    done <<< "$(awg show all dump)"
 
     # Build final json content
     json="{}"

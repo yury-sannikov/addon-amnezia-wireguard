@@ -5,4 +5,4 @@
 # ==============================================================================
 sleep 30
 bashio::log.info "Requesting current status from WireGuard..."
-exec wg show
+exec awg show

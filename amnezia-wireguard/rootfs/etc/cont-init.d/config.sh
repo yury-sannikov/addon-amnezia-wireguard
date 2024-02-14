@@ -49,7 +49,7 @@ interface="wg0"
 if bashio::config.has_value "server.interface"; then
     interface=$(bashio::config "server.interface")
 fi
-config="/etc/wireguard/${interface}.conf"
+config="/etc/amnezia/amneziawg/${interface}.conf"
 
 # Start creation of configuration
 echo "[Interface]" > "${config}"
@@ -87,7 +87,7 @@ if bashio::config.has_value 'server.private_key'; then
 else
     if ! bashio::fs.file_exists '/ssl/wireguard/private_key'; then
         umask 077 || bashio::exit.nok "Could not set a proper umask"
-        wg genkey > /ssl/wireguard/private_key ||
+        awg genkey > /ssl/wireguard/private_key ||
             bashio::exit.nok "Could not generate private key!"
     fi
     server_private_key=$(</ssl/wireguard/private_key)
@@ -97,7 +97,7 @@ fi
 if bashio::config.has_value 'server.public_key'; then
     server_public_key=$(bashio::config 'server.public_key')
 else
-    server_public_key=$(wg pubkey <<< "${server_private_key}")
+    server_public_key=$(awg pubkey <<< "${server_private_key}")
 fi
 
 fwmark=$(bashio::config "server.fwmark")
@@ -248,7 +248,7 @@ for peer in $(bashio::config 'peers|keys'); do
         # or generate one if needed.
         if ! bashio::fs.file_exists "${config_dir}/private_key"; then
             umask 077 || bashio::exit.nok "Could not set a proper umask"
-            wg genkey > "${config_dir}/private_key" ||
+            awg genkey > "${config_dir}/private_key" ||
                 bashio::exit.nok "Could not generate private key for ${name}!"
         fi
         peer_private_key=$(<"${config_dir}/private_key")
@@ -259,7 +259,7 @@ for peer in $(bashio::config 'peers|keys'); do
     if bashio::config.has_value "peers[${peer}].public_key"; then
         peer_public_key=$(bashio::config "peers[${peer}].public_key")
     elif bashio::var.has_value "${peer_private_key}"; then
-        peer_public_key=$(wg pubkey <<< "${peer_private_key}")
+        peer_public_key=$(awg pubkey <<< "${peer_private_key}")
     fi
 
     # Get peer addresses
