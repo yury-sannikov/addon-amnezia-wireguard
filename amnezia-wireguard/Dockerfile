@@ -1,11 +1,11 @@
-ARG BUILD_FROM=ghcr.io/hassio-addons/base:14.3.1
+ARG BUILD_FROM=ghcr.io/hassio-addons/base:16.3.6
 # hadolint ignore=DL3006
 FROM ${BUILD_FROM}
 
 # Amnezia Wireguart Tools version
-ENV AWG_TOOLS=v1.0.20240213
+ENV AWG_TOOLS=v1.0.20241018
 # Amnezia WG GO version
-ENV AWG_GO=v0.2.3
+ENV AWG_GO=v0.2.12
 
 # Set shell
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
@@ -15,19 +15,19 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN \
     apk add --no-cache --virtual .build-dependencies \
         build-base=0.5-r3 \
-        git=2.40.1-r0 \
-        linux-headers=6.3-r0 \
+        linux-headers \
+        git=2.45.2-r0 \
     \
     && apk add --no-cache \
-        go=1.20.11-r0 \
-        iptables=1.8.9-r2 \
-        libqrencode=4.1.1-r1 \
+        go=1.22.9-r0 \
+        iptables=1.8.10-r3 \
+        libqrencode-tools=4.1.1-r2 \
         openresolv=3.13.2-r0 \
     \
     && ln -sf /sbin/xtables-nft-multi /sbin/ip6tables \
     && ln -sf /sbin/xtables-nft-multi /sbin/iptables \
     && git clone --depth=1 --branch $AWG_TOOLS \
-        https://github.com/amnezia-vpn/amneziawg-tools.git /tmp/wg-tools \
+        "https://github.com/amnezia-vpn/amneziawg-tools.git" /tmp/wg-tools \
     && cd /tmp/wg-tools/src \
     && make \
     && make install \
@@ -74,3 +74,4 @@ LABEL \
     org.opencontainers.image.created=${BUILD_DATE} \
     org.opencontainers.image.revision=${BUILD_REF} \
     org.opencontainers.image.version=${BUILD_VERSION}
+
